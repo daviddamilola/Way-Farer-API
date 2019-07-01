@@ -1,3 +1,6 @@
-export default {
-  extends: "airbnb-base"
+module.exports = {
+  extends: "airbnb-base",
+  env: {
+    mocha: true
+  }
 };
