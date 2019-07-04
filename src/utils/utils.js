@@ -15,7 +15,8 @@ class Utils {
   /**
    * returns a response with the data passed in
    *
-   * @param {res, status, data} res: the response object, status: status code, data: data to be returned
+   * @param {res, status, data} res: the response object,
+   *  status: status code, data: data to be returned
    * @return {json object} .
    */
 
