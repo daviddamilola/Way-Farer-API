@@ -42,7 +42,12 @@ const execute = async () => {
 execute();
 
 const pg = {
-  query: (...params) => params.length > 1 ? pool.query(params[0], params[1]) : pool.query(params[0]),
+  query: (...params) => {
+    if (params.length > 1) {
+      return pool.query(params[0], params[1]);
+    }
+    return pool.query(params[0]);
+  },
 };
 
 const initTables = async () => {
