@@ -23,7 +23,6 @@ const emptyTable = async () => {
 };
 
 before((done) => {
-  createTables();
   emptyTable();
   done();
 });
