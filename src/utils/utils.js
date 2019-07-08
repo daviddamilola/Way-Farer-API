@@ -1,3 +1,10 @@
+import debug from 'debug';
+import bycrypt from 'bcrypt-nodejs';
+import db from '../db/index';
+
+const log = debug('server/debug');
+const { pg } = db;
+
 class Utils {
   /**
    * send an error response
@@ -25,6 +32,65 @@ class Utils {
       status: 'success',
       data,
     });
+  }
+
+  static async insert(table, columnnames, values = [], selector) {
+    const queryString = `INSERT INTO ${table} (${columnnames}) VALUES (${selector}) RETURNING *`;
+    try {
+      const { rows } = await pg.query(queryString, values);
+      return rows;
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  static async select(table, column) {
+    const queryString = `SELECT ${column} FROM ${table}`;
+    log(`executing ${queryString}`);
+    try {
+      const { rows } = await pg.query(queryString);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async selectWhere(table_name, select_list, condition, values) {
+    const queryString = `SELECT ${select_list} FROM ${table_name} WHERE ${condition};`;
+    try {
+      const { rows } = await pg.query(queryString, values);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async update(table_name, columns, condition, values) {
+    const queryString = `UPDATE ${table_name} SET ${columns} WHERE ${condition} returning *`;
+    try {
+      const { rows } = await pg.query(queryString, values);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteWhere(table_name, condition, values) {
+    const queryString = `DELETE FROM ${table_name} WHERE ${condition}`;
+    try {
+      const { rows } = await pg.query(queryString, values);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static hashPassword(password) {
+    return bycrypt.hashSync(password);
+  }
+
+  static comparePassword(password, hash) {
+    return bycrypt.compareSync(password, hash);
   }
 }
 
