@@ -1,8 +1,9 @@
 language: node_js
-services:
-  - postgresql
 node_js:
   - "stable"
+services:
+  - postgresql
+
 notifications:
   email: false
 cache:
