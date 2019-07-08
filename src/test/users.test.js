@@ -47,16 +47,31 @@ const invalidUserEmail = {
   first_name: 'david',
   last_name: 'damilola',
   password: 'David20@$',
-}
+};
 
 const invalidUserPassword = {
   email: 'dan@gmail.com',
   first_name: 'david',
   last_name: 'damilola',
   password: 'David',
-}
+};
 
-const url = '/api/v1/auth/signup'
+const invalidFirstName = {
+  email: 'dan@gmail.com',
+  first_name: 'david34',
+  last_name: 'damilola',
+  password: 'David',
+};
+
+const invalidLastName = {
+  email: 'dan@gmail.com',
+  first_name: 'david',
+  last_name: 'damilola56',
+  password: 'David',
+};
+
+
+const url = '/api/v1/auth/signup';
 describe('user controller', () => {
   describe('post /api/v1/auth/signup', () => {
     it('should sign up a user with valid details', (done) => {
@@ -105,6 +120,32 @@ describe('user controller', () => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
           expect(res.body.error).to.be.equal('Please supply a valid password');
+          expect(res.status).to.equal(409);
+          done();
+        });
+    });
+
+    it('should not sign up a user with invalid first name', (done) => {
+      superTest(server)
+        .post(url)
+        .send(invalidFirstName)
+        .end((err, res) => {
+          expect(res.body).to.haveOwnProperty('status');
+          expect(res.body.status).to.be.equal('error');
+          expect(res.body.error).to.be.equal('Please supply a valid first name');
+          expect(res.status).to.equal(409);
+          done();
+        });
+    });
+
+    it('should not sign up a user with invalid last name', (done) => {
+      superTest(server)
+        .post(url)
+        .send(invalidLastName)
+        .end((err, res) => {
+          expect(res.body).to.haveOwnProperty('status');
+          expect(res.body.status).to.be.equal('error');
+          expect(res.body.error).to.be.equal('Please supply a valid last name');
           expect(res.status).to.equal(409);
           done();
         });

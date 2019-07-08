@@ -2,7 +2,10 @@ import express from 'express';
 import Users from '../../controllers/users';
 import Validator from '../../middlewares/validate';
 
-const { validateEmail, validateFirstName, validateLastName, validatePassword } = Validator;
+const {
+  validateEmail, validateFirstName, validateLastName, validatePassword,
+} = Validator;
+const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -13,11 +16,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/auth/signup', Users.welcomeSignUp)
-  .post('/auth/signup',
-    validateEmail,
-    validateFirstName,
-    validateLastName,
-    validatePassword,
-    Users.signUp);
+  .post('/auth/signup', validateSignUp, Users.signUp);
 
 export default router;
