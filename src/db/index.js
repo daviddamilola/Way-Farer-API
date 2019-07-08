@@ -11,7 +11,7 @@ let configdb;
 if (process.env.NODE_ENV === 'test') {
   debug('server/debug')('executed test');
   configdb = {
-    connectionString: process.env.TEST_DB_URL,
+    connectionString: process.env.TEST_DATABASE_URL,
   };
 }
 if (process.env.NODE_ENV !== 'test') {
@@ -58,5 +58,6 @@ const initTables = async () => {
   }
 };
 
+initTables();
 
 export default { pg, initTables };

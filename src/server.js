@@ -1,15 +1,15 @@
 import express from 'express';
+import validator from 'express-validator';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import debug from 'debug';
 import apiRoutes from './routes/api/routes';
 import Util from './utils/utils';
-import db from './db/index';
 
 dotenv.config();
 
 const { errResponse } = Util;
-db.initTables();
+
 const app = express();
 app.set('port', process.env.PORT || 2000);
 app.use(
@@ -18,7 +18,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
-
+app.use(validator());
 app.use('/api/v1', apiRoutes);
 
 app.all('*', (req, res) => {
