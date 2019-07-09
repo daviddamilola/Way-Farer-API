@@ -44,12 +44,12 @@ class Validator {
       .catch(errors => errResponse(res, 409, errors[0].msg));
   }
 
-  static checkParam(req, res, next) {
-    req.checkParams('id', 'query :id can only be an integer number').isInt();
-    req.asyncValidationErrors()
-      .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
-  }
+  // static checkParam(req, res, next) {
+  //   req.checkParams('id', 'query :id can only be an integer number').isInt();
+  //   req.asyncValidationErrors()
+  //     .then(() => next())
+  //     .catch(errors => errResponse(res, 409, errors[0].msg));
+  // }
 }
 
 export default Validator;

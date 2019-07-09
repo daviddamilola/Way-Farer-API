@@ -46,7 +46,6 @@ class Utils {
 
   static async select(table, column) {
     const queryString = `SELECT ${column} FROM ${table}`;
-    log(`executing ${queryString}`);
     try {
       const { rows } = await pg.query(queryString);
       return rows;

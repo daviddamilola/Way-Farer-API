@@ -3,7 +3,9 @@ import Utils from '../utils/utils';
 import User from '../models/User';
 import auth from '../middlewares/auth';
 
-const { response, hashPassword, insert, errResponse } = Utils;
+const {
+  response, hashPassword, comparePassword, insert, errResponse,
+} = Utils;
 const { makeToken } = auth;
 const log = debug('server/debug');
 
@@ -35,6 +37,27 @@ class Users {
         return errResponse(res, 409, 'user already exists');
       }
       return errResponse(res, 500, 'an error occured try again later');
+    }
+  }
+
+  static async signIn(req, res) {
+    try {
+      const { email, password } = req.body;
+      const targetUser = await User.signIn(email);
+      if (!targetUser.row) {
+        return errResponse(res, 404, 'user does not exist');
+      }
+      const hashedPass = targetUser.row.password;
+      if (!comparePassword(password, hashedPass)) {
+        return errResponse(res, 401, 'password is incorrect');
+      }
+      const { row } = targetUser;
+      const { is_admin } = row;
+      const token = makeToken(row.id, row.email, row.is_admin, row.first_name, row.last_name);
+      const data = { user_id: row.id, is_admin, token };
+      return response(res, 200, data);
+    } catch (error) {
+      return errResponse(res, 500, 'an error occured, please try again');
     }
   }
 }

@@ -15,7 +15,6 @@ if (process.env.NODE_ENV === 'test') {
   };
 }
 if (process.env.NODE_ENV !== 'test') {
-  debug('server/debug')('executed non test');
   configdb = {
     connectionString: process.env.DATABASE_URL,
   };
