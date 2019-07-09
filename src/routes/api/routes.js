@@ -6,6 +6,7 @@ const {
   validateEmail, validateFirstName, validateLastName, validatePassword,
 } = Validator;
 const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
+const validateSignIn = [validateEmail];
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -17,5 +18,7 @@ router.get('/', (req, res) => {
 
 router.get('/auth/signup', Users.welcomeSignUp)
   .post('/auth/signup', validateSignUp, Users.signUp);
+
+router.post('/auth/signin', validateSignIn, Users.signIn);
 
 export default router;

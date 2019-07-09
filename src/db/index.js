@@ -15,7 +15,6 @@ if (process.env.NODE_ENV === 'test') {
   };
 }
 if (process.env.NODE_ENV !== 'test') {
-  debug('server/debug')('executed non test');
   configdb = {
     connectionString: process.env.DATABASE_URL,
   };
@@ -42,7 +41,12 @@ const execute = async () => {
 execute();
 
 const pg = {
-  query: (...params) => params.length > 1 ? pool.query(params[0], params[1]) : pool.query(params[0]),
+  query: (...params) => {
+    if (params.length > 1) {
+      return pool.query(params[0], params[1]);
+    }
+    return pool.query(params[0]);
+  },
 };
 
 const initTables = async () => {
