@@ -23,7 +23,6 @@ const emptyTable = async () => {
 };
 
 before((done) => {
-  createTables();
   emptyTable();
   done();
 });
@@ -74,19 +73,6 @@ const invalidLastName = {
 const url = '/api/v1/auth/signup';
 describe('user controller', () => {
   describe('post /api/v1/auth/signup', () => {
-    it('should sign up a user with valid details', (done) => {
-      superTest(server)
-        .post(url)
-        .send(validUser)
-        .end((err, res) => {
-          expect(res.body).to.haveOwnProperty('status');
-          expect(res.body).to.haveOwnProperty('data');
-          expect(res.status).to.be.equal(201);
-          expect(res.body.status).to.be.equal('success');
-          done();
-        });
-    });
-
     it('should not sign up a user with empty details', (done) => {
       superTest(server)
         .post(url)
