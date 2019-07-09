@@ -28,7 +28,6 @@ const emptyTable = async () => {
 };
 
 before((done) => {
-  createTables();
   emptyTable();
   done();
 });
@@ -59,7 +58,6 @@ describe('user controller', () => {
           done();
         });
     });
-
     it('should not sign up a user with empty details', (done) => {
       superTest(server)
         .post(signUpUrl)
