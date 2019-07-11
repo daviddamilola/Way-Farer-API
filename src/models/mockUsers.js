@@ -5,6 +5,12 @@ const mockUsers = {
     last_name: 'damilola',
     password: 'David20@$',
   },
+  validAdminUser: {
+    email: 'dan@wayfareradmin.com',
+    first_name: 'david',
+    last_name: 'damilola',
+    password: 'David20@$',
+  },
 
   emptyUser: {
     email: undefined,

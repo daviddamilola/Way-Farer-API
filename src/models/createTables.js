@@ -23,12 +23,12 @@ const QueryModel = {
   createTripTable: `
   CREATE TABLE IF NOT EXISTS trip(
     id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-    bus_id INT  NOT NULL,
+    bus_id INT  NOT NULL UNIQUE,
     origin VARCHAR(128) NOT NULL,
     destination VARCHAR(128) NOT NULL,
     trip_date DATE NOT NULL,
     fare FLOAT NOT NULL,
-    status FLOAT NOT NULL,
+    status VARCHAR(127) NOT NULL DEFAULT ('active'),
     created_on DATE NOT NULL);
   `,
 
@@ -50,6 +50,11 @@ const QueryModel = {
 
   alterTripTable: `ALTER TABLE trip
                      ADD CONSTRAINT fk_trip_bus FOREIGN KEY (bus_id) REFERENCES bus(id) ON DELETE CASCADE`,
+  seedBus: `INSERT INTO bus 
+                    (number_plate, manufacturer, model, year, capacity, created_on ) 
+                    VALUES 
+                    ('ktu-mus-19', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('ktu-908-lg', 'toyota', 'hiace', 2015, 22, '10-07-2019')`,
 };
 
 export default QueryModel;

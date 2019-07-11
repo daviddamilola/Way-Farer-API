@@ -2,6 +2,7 @@ import debug from 'debug';
 import Utils from '../utils/utils';
 import User from '../models/User';
 import auth from '../middlewares/auth';
+import Admin from '../models/Admin';
 
 const {
   response, hashPassword, comparePassword, insert, errResponse,
@@ -19,13 +20,15 @@ class Users {
       email, first_name, last_name, password,
     } = req.body;
     const protectedPassword = hashPassword(password);
-    const newUser = new User(email, first_name, last_name, protectedPassword);
+    const newUser = /@wayfareradmin/.test(email)
+      ? new Admin(email, first_name, last_name, protectedPassword)
+      : new User(email, first_name, last_name, protectedPassword);
     try {
       const row = await insert('users',
         'email, first_name, last_name, password, is_admin, registered_on',
         [newUser.email, newUser.first_name, newUser.last_name, newUser.password, newUser.is_admin, newUser.registered_on], '$1, $2, $3, $4, $5, $6');
       const rowData = row[0];
-      const token = makeToken(rowData.id, rowData.email, rowData.is_admin, rowData.first_name, rowData.last_name);
+      const token = makeToken(rowData.id, rowData.email, rowData.first_name, rowData.last_name);
       const data = {
         user_id: rowData.id,
         is_admin: rowData.is_admin,

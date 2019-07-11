@@ -1,36 +1,12 @@
 import { expect } from 'chai';
 import superTest from 'supertest';
-import debug from 'debug';
 import server from '../server';
-import db from '../db';
 import mockUsers from '../models/mockUsers';
 
-const { pg, initTables } = db;
 const {
   validUser, emptyUser, invalidFirstName, invalidLastName, invalidUserEmail, invalidUserPassword,
-  existingUser, wrongEmailLogin, wrongPasswordLogin,
+  existingUser, wrongEmailLogin, wrongPasswordLogin, validAdminUser,
 } = mockUsers;
-
-const createTables = async () => {
-  try {
-    await initTables();
-  } catch (error) {
-    debug('server/debug')(error);
-  }
-};
-
-const emptyTable = async () => {
-  try {
-    await pg.query('truncate table users CASCADE;');
-  } catch (error) {
-    debug('server/debug')(error);
-  }
-};
-
-before((done) => {
-  emptyTable();
-  done();
-});
 
 const signUpUrl = '/api/v1/auth/signup';
 const signInUrl = '/api/v1/auth/signin';
@@ -50,6 +26,18 @@ describe('user controller', () => {
       superTest(server)
         .post(signUpUrl)
         .send(validUser)
+        .end((err, res) => {
+          expect(res.body).to.haveOwnProperty('status');
+          expect(res.body).to.haveOwnProperty('data');
+          expect(res.status).to.be.equal(201);
+          expect(res.body.status).to.be.equal('success');
+          done();
+        });
+    });
+    it('should sign up a user admin email as an admin', (done) => {
+      superTest(server)
+        .post(signUpUrl)
+        .send(validAdminUser)
         .end((err, res) => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body).to.haveOwnProperty('data');
