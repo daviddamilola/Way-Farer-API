@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const Authenticate = {
-  makeToken: (id, email, is_admin, first_name, last_name) => {
+  makeToken: (id, email, first_name, last_name) => {
     const token = jwt.sign({
-      id, email, is_admin, first_name, last_name,
+      id, email, first_name, last_name,
     }, process.env.SECRET, { expiresIn: '24h' });
     return token;
   },

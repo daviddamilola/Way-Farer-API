@@ -8,7 +8,7 @@
     "start-dev": "crossenv NODE_ENV=development npm run exec-db-dev && NODE_ENV=development DEBUG=app/debug nodemon --exec babel-node ./src/server.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
-    "test": "cross-env DEBUG=server/debug NODE_ENV=test  nyc mocha -r @babel/register 'src/**/**test.js' --timeout 12000 --exit",
+    "test": "cross-env DEBUG=server/debug NODE_ENV=test  nyc mocha -r @babel/register 'src/**/**test.js' --timeout 120000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },

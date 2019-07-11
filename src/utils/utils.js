@@ -1,8 +1,6 @@
-import debug from 'debug';
 import bycrypt from 'bcrypt-nodejs';
 import db from '../db/index';
 
-const log = debug('server/debug');
 const { pg } = db;
 
 class Utils {

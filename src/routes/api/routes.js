@@ -1,7 +1,12 @@
 import express from 'express';
 import Users from '../../controllers/users';
+import Trips from '../../controllers/trip';
 import Validator from '../../middlewares/validate';
+import isAdmin from '../../middlewares/isAdmin';
+import busCheck from '../../middlewares/bus';
 
+const { checkIfBusExists, checkIfBusIsSheduled } = busCheck;
+const { checkIfAdmin } = isAdmin;
 const {
   validateEmail, validateFirstName, validateLastName, validatePassword,
 } = Validator;
@@ -20,5 +25,7 @@ router.get('/auth/signup', Users.welcomeSignUp)
   .post('/auth/signup', validateSignUp, Users.signUp);
 
 router.post('/auth/signin', validateSignIn, Users.signIn);
+
+router.post('/trips', checkIfAdmin, checkIfBusExists, checkIfBusIsSheduled, Trips.createTrip);
 
 export default router;

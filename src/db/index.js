@@ -53,6 +53,7 @@ const initTables = async () => {
   try {
     await pg.query(queries.createUsersTable);
     await pg.query(queries.createBusTable);
+    await pg.query(queries.seedBus);
     await pg.query(queries.createTripTable);
     await pg.query(queries.createBookingsTable);
     await pg.query(queries.alterTripTable);
