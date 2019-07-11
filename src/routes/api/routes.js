@@ -4,7 +4,9 @@ import Trips from '../../controllers/trip';
 import Validator from '../../middlewares/validate';
 import isAdmin from '../../middlewares/isAdmin';
 import busCheck from '../../middlewares/bus';
+import Authorize from '../../middlewares/authorize';
 
+const { authorize } = Authorize;
 const { checkIfBusExists, checkIfBusIsSheduled } = busCheck;
 const { checkIfAdmin } = isAdmin;
 const {
@@ -27,5 +29,7 @@ router.get('/auth/signup', Users.welcomeSignUp)
 router.post('/auth/signin', validateSignIn, Users.signIn);
 
 router.post('/trips', checkIfAdmin, checkIfBusExists, checkIfBusIsSheduled, Trips.createTrip);
+
+router.get('/trips', authorize, Trips.viewTrips);
 
 export default router;

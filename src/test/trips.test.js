@@ -53,4 +53,27 @@ describe('trips controller', () => {
         });
     });
   });
+  describe('get /api/v1/trips should return all trips to both admin and users', () => {
+    it('should return an array of available trips to user or admin', (done) => {
+      superTest(server)
+        .get('/api/v1/trips')
+        // eslint-disable-next-line max-len
+        .set('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJkYXZpZEB3YXlmYXJlcmFkbWluLmNvbSIsImZpcnN0X25hbWUiOnRydWUsImxhc3RfbmFtZSI6Im9sdXdhc3VzaSIsImlhdCI6MTU2Mjg0OTY4MywiZXhwIjoxNTYyOTM2MDgzfQ.-EYguphNQsKoFRTSMrqst5ZGAJb78UKdx1MgMBkVvzE')
+        .end((err, res) => {
+          expect(res.status).to.be.equal(200);
+          expect(res.body.data).to.be.an('array');
+          done();
+        });
+    });
+
+    it('should not grant access to users not logged in', (done) => {
+      superTest(server)
+        .get('/api/v1/trips')
+        // eslint-disable-next-line max-len
+        .end((err, res) => {
+          expect(res.status).to.be.equal(401);
+          done();
+        });
+    });
+  });
 });
