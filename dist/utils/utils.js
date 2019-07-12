@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _debug = _interopRequireDefault(require("debug"));
-
 var _bcryptNodejs = _interopRequireDefault(require("bcrypt-nodejs"));
 
 var _index = _interopRequireDefault(require("../db/index"));
@@ -23,7 +21,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var log = (0, _debug["default"])('server/debug');
 var pg = _index["default"].pg;
 
 var Utils =
@@ -125,27 +122,26 @@ function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 queryString = "SELECT ".concat(column, " FROM ").concat(table);
-                log("executing ".concat(queryString));
-                _context2.prev = 2;
-                _context2.next = 5;
+                _context2.prev = 1;
+                _context2.next = 4;
                 return pg.query(queryString);
 
-              case 5:
+              case 4:
                 _ref2 = _context2.sent;
                 rows = _ref2.rows;
                 return _context2.abrupt("return", rows);
 
-              case 10:
-                _context2.prev = 10;
-                _context2.t0 = _context2["catch"](2);
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](1);
                 throw _context2.t0;
 
-              case 13:
+              case 12:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[2, 10]]);
+        }, _callee2, null, [[1, 9]]);
       }));
 
       function select(_x3, _x4) {
