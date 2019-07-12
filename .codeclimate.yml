@@ -28,6 +28,6 @@ checks:
       threshold: 6
 exclude_patterns:
   - "node_modules/"
-  - "server/tests/"
+  - "src/test/"
   - "dist/"
   - "coverage"
