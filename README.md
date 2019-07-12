@@ -1,5 +1,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/d32912f0c6a037810aff/maintainability)](https://codeclimate.com/github/daviddamilola/Way-Farer-API/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/daviddamilola/Way-Farer-API/badge.svg?branch=develop)](https://coveralls.io/github/daviddamilola/Way-Farer-API?branch=develop)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d32912f0c6a037810aff/test_coverage)](https://codeclimate.com/github/daviddamilola/Way-Farer-API/test_coverage)
 [![Build Status](https://travis-ci.org/daviddamilola/Way-Farer-API.svg?branch=develop)](https://travis-ci.org/daviddamilola/Way-Farer-API)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
