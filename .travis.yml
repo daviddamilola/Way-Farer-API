@@ -3,7 +3,9 @@ node_js:
   - "stable"
 services:
   - postgresql
-
+env:
+  global:
+    - CC_TEST_REPORTER_ID=05b11fbc341ef9f8845b7a00eb8a6a9ec274dccf2750daa21b0ec73033f1e310
 notifications:
   email: false
 cache:
@@ -12,8 +14,14 @@ cache:
 before_script:
   - npm install
   - psql -c 'create database travis_ci_test;' -U postgres
+  - yarn global add nyc
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - npm run test
 after_success:
   - npm run coverage
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
