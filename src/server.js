@@ -1,6 +1,7 @@
 import express from 'express';
 import validator from 'express-validator';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import debug from 'debug';
 import apiRoutes from './routes/api/routes';
@@ -18,6 +19,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
+app.use(cors('*'));
 app.use(validator());
 app.use('/api/v1', apiRoutes);
 

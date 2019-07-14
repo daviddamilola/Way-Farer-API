@@ -86,6 +86,17 @@ describe('trips controller', () => {
           });
       });
     });
+    describe('get /api/v1/bookings', () => {
+      it('should return history of booking to user', (done) => {
+        superTest(server)
+          .get('/api/v1/bookings')
+          .set('Authorization', token2)
+          .end((err, res) => {
+            expect(res.status).to.be.equal(200);
+            done();
+          });
+      });
+    });
     describe('get /api/v1/trips should return all trips to both admin and users', () => {
       it('should return an array of available trips to user or admin', (done) => {
         superTest(server)

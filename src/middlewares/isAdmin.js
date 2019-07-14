@@ -6,7 +6,7 @@ const { verifyToken } = Auth;
 
 class IsAdmin {
   static checkIfAdmin(req, res, next) {
-    const { is_admin } = verifyToken(req.token).payload;
+    const { is_admin } = verifyToken(req.headers.token).payload;
     if (is_admin) {
       return next();
     }

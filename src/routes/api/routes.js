@@ -37,4 +37,6 @@ router.get('/trips', authorize, Trips.viewTrips);
 
 router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking);
 
+router.get('/bookings', authorize, Bookings.viewBookings);
+
 export default router;

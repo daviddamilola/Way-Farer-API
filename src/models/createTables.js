@@ -35,9 +35,15 @@ const QueryModel = {
 
   createBookingsTable: `
   CREATE TABLE IF NOT EXISTS bookings(
-    id SERIAL NOT NULL PRIMARY KEY,
+    booking_id SERIAL NOT NULL PRIMARY KEY,
+    user_id INT NOT NULL,
     trip_id INT NOT NULL,
-    user_id INT NOT NULL UNIQUE,
+    bus_id INT NOT NULL,
+    trip_date DATE NOT NULL,
+    seat_number INT NOT NULL,
+    first_name VARCHAR(128) NOT NULL,
+    last_name VARCHAR(128) NOT NULL,
+    email VARCHAR(128) NOT NULL,
     created_on DATE NOT NULL);
   `,
 

@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production  DEBUG=server/debug nodemon --exec babel-node ./src/server.js",
     "start-dev": "cross-env NODE_ENV=development  DEBUG=server/debug nodemon --exec babel-node ./src/server.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/server.js",
+    "serve": "NODE_ENV=production node dist/server.js",
     "test": "cross-env DEBUG=server/debug NODE_ENV=test  nyc --reporter=html --reporter=text mocha -r @babel/register 'src/**/**test.js' --timeout 120000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
@@ -15,6 +15,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "crossenv": "0.0.2-security",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
