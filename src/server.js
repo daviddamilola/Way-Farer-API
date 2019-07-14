@@ -19,7 +19,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
-app.use(cors(*));
+app.use(cors('*'));
 app.use(validator());
 app.use('/api/v1', apiRoutes);
 
