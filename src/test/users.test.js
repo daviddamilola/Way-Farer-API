@@ -78,7 +78,8 @@ describe('user controller', () => {
         .end((err, res) => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
-          expect(res.body.error).to.be.equal('Please supply a valid password');
+          // eslint-disable-next-line max-len
+          expect(res.body.error).to.be.equal('password cannot be empty and must have at least 1 uppercase letter, 1 lowercase, a number and special character ');
           expect(res.status).to.equal(409);
           done();
         });
