@@ -1,4 +1,3 @@
-import debug from 'debug';
 import Utils from '../utils/utils';
 import User from '../models/User';
 import auth from '../middlewares/auth';
@@ -8,7 +7,6 @@ const {
   response, hashPassword, comparePassword, insert, errResponse,
 } = Utils;
 const { makeToken } = auth;
-const log = debug('server/debug');
 
 class Users {
   static welcomeSignUp(req, res) {
@@ -28,7 +26,7 @@ class Users {
         'email, first_name, last_name, password, is_admin, registered_on',
         [newUser.email, newUser.first_name, newUser.last_name, newUser.password, newUser.is_admin, newUser.registered_on], '$1, $2, $3, $4, $5, $6');
       const rowData = row[0];
-      const token = makeToken(rowData.id, rowData.email, rowData.first_name, rowData.last_name);
+      const token = makeToken(rowData.id, rowData.email, rowData.first_name, rowData.last_name, rowData.is_admin);
       const data = {
         user_id: rowData.id,
         is_admin: rowData.is_admin,
@@ -56,7 +54,7 @@ class Users {
       }
       const { row } = targetUser;
       const { is_admin } = row;
-      const token = makeToken(row.id, row.email, row.is_admin, row.first_name, row.last_name);
+      const token = makeToken(row.id, row.email, row.first_name, row.last_name, row.is_admin);
       const data = { user_id: row.id, is_admin, token };
       return response(res, 200, data);
     } catch (error) {

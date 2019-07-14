@@ -4,8 +4,8 @@
   "description": "WayFarer is a public bus transportation booking server.",
   "main": "src/server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./dist/server.js",
-    "start-dev": "crossenv NODE_ENV=development  DEBUG=app/debug nodemon --exec babel-node ./src/server.js",
+    "start": "cross-env NODE_ENV=production  DEBUG=server/debug nodemon --exec babel-node ./src/server.js",
+    "start-dev": "cross-env NODE_ENV=development  DEBUG=server/debug nodemon --exec babel-node ./src/server.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
     "test": "cross-env DEBUG=server/debug NODE_ENV=test  nyc --reporter=html --reporter=text mocha -r @babel/register 'src/**/**test.js' --timeout 120000 --exit",

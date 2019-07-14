@@ -62,12 +62,13 @@ class Utils {
     }
   }
 
-  static async update(table_name, columns, condition, values) {
-    const queryString = `UPDATE ${table_name} SET ${columns} WHERE ${condition} returning *`;
+  static async update(table_name, columnValuePair, condition, values) {
+    const queryString = `UPDATE ${table_name} SET ${columnValuePair} WHERE ${condition};`;
     try {
       const { rows } = await pg.query(queryString, values);
       return rows;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

@@ -37,19 +37,22 @@ class Validator {
   }
 
   static validatePassword(req, res, next) {
-    req.checkBody('password', 'Please supply a valid password')
+    req.checkBody('password', 'password cannot be empty and must have at least 1 uppercase letter, 1 lowercase, a number and special character ')
       .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/);
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 409, errors[0].msg));
   }
 
-  // static checkParam(req, res, next) {
-  //   req.checkParams('id', 'query :id can only be an integer number').isInt();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkTripId(req, res, next) {
+    req.checkBody('trip_id', 'trip_id must be an integer number and cannot be empty')
+      .not()
+      .isEmpty()
+      .isNumeric();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 }
 
 export default Validator;

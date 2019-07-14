@@ -53,11 +53,11 @@ const initTables = async () => {
   try {
     await pg.query(queries.createUsersTable);
     await pg.query(queries.createBusTable);
-    await pg.query(queries.seedBus);
     await pg.query(queries.createTripTable);
     await pg.query(queries.createBookingsTable);
     await pg.query(queries.alterTripTable);
     await pg.query(queries.alterBookingsTable);
+    await pg.query(queries.seedBus);
   } catch (error) {
     debug('server/debug')(`oops error occured: ${error}`);
   }
