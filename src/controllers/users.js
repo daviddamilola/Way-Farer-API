@@ -1,8 +1,10 @@
+import debug from 'debug';
 import Utils from '../utils/utils';
 import User from '../models/User';
 import auth from '../middlewares/auth';
 import Admin from '../models/Admin';
 
+const log = debug('server/debug');
 const {
   response, hashPassword, comparePassword, insert, errResponse,
 } = Utils;
@@ -37,6 +39,7 @@ class Users {
       if (errors.routine === '_bt_check_unique') {
         return errResponse(res, 409, 'user already exists');
       }
+      log(errors);
       return errResponse(res, 500, 'an error occured try again later');
     }
   }
@@ -58,6 +61,7 @@ class Users {
       const data = { user_id: row.id, is_admin, token };
       return response(res, 200, data);
     } catch (error) {
+      log(error);
       return errResponse(res, 500, 'an error occured, please try again');
     }
   }
