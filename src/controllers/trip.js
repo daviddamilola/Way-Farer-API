@@ -18,7 +18,7 @@ class Trips {
         '$1, $2, $3, $4, $5, $6, $7, $8');
       const result = rows[0];
       const data = {
-        trip_id: result.id,
+        id: result.id,
         bus_id: result.bus_id,
         origin: result.origin,
         destination: result.destination,
@@ -38,7 +38,7 @@ class Trips {
       const rows = await selectWhere('trip', 'id, bus_id, origin, destination, trip_date, fare, seats_available', 'status= $1', ['active']);
       const data = rows.map((trip) => {
         const obj = {
-          trip_id: trip.id,
+          id: trip.id,
           bus_id: trip.bus_id,
           origin: trip.origin,
           destination: trip.destination,

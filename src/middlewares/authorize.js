@@ -6,7 +6,7 @@ class Authorize {
     const bearerHeader = req.headers.authorization;
     if (bearerHeader !== undefined) {
       console.log('setting req.token....');
-      req.token = bearerHeader;
+      req.headers.token = bearerHeader;
     } else {
       return errResponse(res, 401, 'unauthorized, login or sign up to access');
     }
