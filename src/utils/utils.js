@@ -68,13 +68,12 @@ class Utils {
       const { rows } = await pg.query(queryString, values);
       return rows;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
 
   static async deleteWhere(table_name, condition, values) {
-    const queryString = `DELETE FROM ${table_name} WHERE ${condition}`;
+    const queryString = `DELETE FROM ${table_name} WHERE ${condition} returning *`;
     try {
       const { rows } = await pg.query(queryString, values);
       return rows;

@@ -42,4 +42,6 @@ router.patch('/trips/:tripid', authorize, checkIfAdmin, checkparamId, checkIfTri
 router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking)
   .get('/bookings', authorize, Bookings.viewBookings);
 
+router.delete('/bookings/:bookingId', authorize, Bookings.deleteBooking);
+
 export default router;
