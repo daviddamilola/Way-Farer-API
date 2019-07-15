@@ -36,7 +36,7 @@ router.post('/trips', authorize, checkIfAdmin, checkIfBusExists, checkSeats,
   checkValidSeats, Trips.createTrip)
   .get('/trips', authorize, Trips.viewTrips);
 
-router.patch('/trips/:tripId', authorize, checkIfAdmin, checkparamId, checkIfTripIsCancelled, Trips.cancelTrip);
+router.patch('/trips/:tripId', authorize, checkIfAdmin, checkparamId, Trips.cancelTrip);
 
 router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking)
   .get('/bookings', authorize, Bookings.viewBookings);
