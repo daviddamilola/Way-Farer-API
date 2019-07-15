@@ -55,6 +55,7 @@ class Bookings {
       return response(res, 200, row);
     }
     row = await selectWhere('bookings', '*', 'user_id=$1', [details.id]);
+    log('row is',row);
     return response(res, 200, row);
   }
 
