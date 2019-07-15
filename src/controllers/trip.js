@@ -9,8 +9,9 @@ const {
 class Trips {
   static async createTrip(req, res) {
     const {
-      bus_id, origin, destination, fare, status, seats, trip_date,
+      bus_id, origin, destination, fare, seats, trip_date,
     } = req.body;
+    const status = "active";
     const date = new Date(trip_date);
     try {
       const trip = new Trip(bus_id, origin, destination, date, parseFloat(fare), status, seats);
