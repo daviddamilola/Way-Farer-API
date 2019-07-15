@@ -1,6 +1,8 @@
+import debug from 'debug';
 import Trip from '../models/Trip';
 import Utils from '../utils/utils';
 
+const log = debug('server/debug');
 const {
   insert, response, errResponse, selectWhere, update,
 } = Utils;
@@ -27,6 +29,7 @@ class Trips {
       };
       return response(res, 201, data);
     } catch (error) {
+      log(error);
       return errResponse(res, 500, 'an error occured please try again later');
     }
   }
@@ -51,6 +54,7 @@ class Trips {
       }
       return response(res, 200, data);
     } catch (error) {
+      log(error);
       return errResponse(res, 500, 'an error occurred, try again later');
     }
   }
@@ -67,6 +71,7 @@ class Trips {
       };
       return response(res, 201, data);
     } catch (error) {
+      log(error);
       return errResponse(res, 500, 'an error occurred, please try again later');
     }
   }

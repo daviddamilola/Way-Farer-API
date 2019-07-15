@@ -1,7 +1,9 @@
+import debug from 'debug';
 import Utils from '../utils/utils';
 import Booking from '../models/Booking';
 import Auth from '../middlewares/auth';
 
+const log = debug('server/debug');
 const { verifyToken } = Auth;
 const {
   selectWhere, select, update, insert, response, errResponse, deleteWhere,
@@ -24,12 +26,23 @@ class Bookings {
       const { bus_id } = tripInfo;
       const row = await insert('bookings', 'user_id,trip_id, bus_id, trip_date, seat_number, first_name, last_name, email, created_on',
         [user_id, trip_id, bus_id, date, seat_number, first_name, last_name, email, newBooking.created_on], '$1,$2,$3,$4,$5,$6,$7,$8,$9');
-      const data = row[0];
+      const data = {
+        id: row[0].booking_id,
+        user_id: row[0].user_id,
+        trip_id: row[0].trip_id,
+        bus_id: row[0].bus_id,
+        trip_date: row[0].trip_date,
+        seat_number: row[0].seat_number,
+        first_name: row[0].first_name,
+        last_name: row[0].last_name,
+        email: row[0].email,
+      };
       return response(res, 201, data);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         return errResponse(res, 422, 'you can only make one booking per trip');
       }
+      log(error);
       return errResponse(res, 500, error);
     }
   }

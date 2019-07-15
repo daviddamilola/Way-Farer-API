@@ -32,8 +32,7 @@ router.get('/auth/signup', Users.welcomeSignUp)
 
 router.post('/auth/signin', validateSignIn, Users.signIn);
 
-router.post('/trips', authorize, checkIfAdmin, checkDate, checkFare, checkSeats, checkBusId,
-  checkDestination, checkOrigin, checkIfBusExists, checkIfBusIsSheduled,
+router.post('/trips', authorize, checkIfAdmin, checkIfBusExists, checkSeats,
   checkValidSeats, Trips.createTrip)
   .get('/trips', authorize, Trips.viewTrips);
 
