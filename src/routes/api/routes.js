@@ -9,11 +9,12 @@ import bookingsMiddleware from '../../middlewares/bookings';
 import Bookings from '../../controllers/bookings';
 
 const { authorize } = Authorize;
-const { checkIfTripExists, tripDateIsValid } = bookingsMiddleware;
+const { checkIfTripExists, tripDateIsValid, checkIfTripIsCancelled } = bookingsMiddleware;
 const { checkIfBusExists, checkIfBusIsSheduled, checkValidSeats } = busCheck;
 const { checkIfAdmin } = isAdmin;
 const {
-  validateEmail, validateFirstName, validateLastName, validatePassword, checkTripId,
+  validateEmail, validateFirstName, validateLastName, validatePassword, checkTripId, checkparamId,
+  checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
 } = Validator;
 const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
 const validateSignIn = [validateEmail];
@@ -31,12 +32,14 @@ router.get('/auth/signup', Users.welcomeSignUp)
 
 router.post('/auth/signin', validateSignIn, Users.signIn);
 
-router.post('/trips', authorize, checkIfAdmin, checkIfBusExists, checkIfBusIsSheduled, checkValidSeats, Trips.createTrip);
+router.post('/trips', authorize, checkIfAdmin, checkDate, checkFare, checkSeats, checkBusId,
+  checkDestination, checkOrigin, checkIfBusExists, checkIfBusIsSheduled,
+  checkValidSeats, Trips.createTrip)
+  .get('/trips', authorize, Trips.viewTrips);
 
-router.get('/trips', authorize, Trips.viewTrips);
+router.patch('/trips/:tripid', authorize, checkIfAdmin, checkparamId, checkIfTripIsCancelled, Trips.cancelTrip);
 
-router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking);
-
-router.get('/bookings', authorize, Bookings.viewBookings);
+router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking)
+  .get('/bookings', authorize, Bookings.viewBookings);
 
 export default router;

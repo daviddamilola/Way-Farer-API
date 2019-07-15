@@ -13,7 +13,7 @@ class busCheck {
 
   static async checkIfBusIsSheduled(req, res, next) {
     const { bus_id } = req.body;
-    const row = await selectWhere('trip', 'destination', 'bus_id=$1', [bus_id]);
+    const row = await selectWhere('trip', 'destination', 'bus_id=$1 and status=$2', [bus_id, 'active']);
     if (row.length) {
       return errResponse(res, 409, `the bus with bus_id provided is already sheduled to go to ${row[0].destination}`);
     }

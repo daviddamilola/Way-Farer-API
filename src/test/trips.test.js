@@ -55,6 +55,82 @@ describe('trips controller', () => {
           done();
         });
     });
+    it('should not create a trip with invalid details', (done) => {
+      console.log('token in sign up', token);
+      superTest(server)
+        .post(url)
+        .set('Authorization', token)
+        .send({
+          bus_id: undefined,
+          origin: 'lagos',
+          destination: 'ilorin',
+          trip_date: '2019-07-20',
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(409);
+          done();
+        });
+    });
+    it('should not create a trip with invalid details', (done) => {
+      console.log('token in sign up', token);
+      superTest(server)
+        .post(url)
+        .set('Authorization', token)
+        .send({
+          bus_id: '1',
+          origin: undefined,
+          destination: 'ilorin',
+          trip_date: '2019-07-20',
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(409);
+          done();
+        });
+    });
+    it('should not create a trip with invalid details', (done) => {
+      console.log('token in sign up', token);
+      superTest(server)
+        .post(url)
+        .set('Authorization', token)
+        .send({
+          bus_id: '1',
+          origin: 'lagos',
+          destination: undefined,
+          trip_date: '2019-07-20',
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(409);
+          done();
+        });
+    });
+    it('should not create a trip with invalid details', (done) => {
+      console.log('token in sign up', token);
+      superTest(server)
+        .post(url)
+        .set('Authorization', token)
+        .send({
+          bus_id: '1',
+          origin: 'lagos',
+          destination: 'ilorin',
+          trip_date: undefined,
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(409);
+          done();
+        });
+    });
     it('should create a trip', (done) => {
       console.log('token in sign up', token);
       superTest(server)
@@ -64,13 +140,31 @@ describe('trips controller', () => {
           bus_id: '2',
           origin: 'lagos',
           destination: 'ilorin',
-          trip_date: '12-07-2019',
+          trip_date: '2019-07-20',
           fare: 6000.00,
           status: 'active',
           seats: 22,
         })
         .end((err, res) => {
           expect(res.status).to.be.equal(201);
+          done();
+        });
+    });
+    it('should validate id', (done) => {
+      superTest(server)
+        .patch('/api/v1/trips/e')
+        .set('Authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.be.equal(409);
+          done();
+        });
+    });
+    it('only admin can cancel an existing trip', (done) => {
+      superTest(server)
+        .patch('/api/v1/trips/1')
+        .set('Authorization', token2)
+        .end((err, res) => {
+          expect(res.status).to.be.equal(403);
           done();
         });
     });

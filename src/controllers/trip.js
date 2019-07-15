@@ -1,9 +1,8 @@
 import Trip from '../models/Trip';
 import Utils from '../utils/utils';
 
-
 const {
-  insert, response, errResponse, selectWhere,
+  insert, response, errResponse, selectWhere, update,
 } = Utils;
 class Trips {
   static async createTrip(req, res) {
@@ -12,7 +11,7 @@ class Trips {
     } = req.body;
     const date = new Date(trip_date);
     try {
-      const trip = new Trip(bus_id, origin, destination, date, fare, status, seats);
+      const trip = new Trip(bus_id, origin, destination, date, parseFloat(fare), status, seats);
       const rows = await insert('trip', 'bus_id, origin, destination, trip_Date, fare, status, seats_available, created_on',
         [trip.bus_id, trip.origin, trip.destination, trip.trip_date, trip.fare, trip.status, trip.seats, trip.createdOn],
         '$1, $2, $3, $4, $5, $6, $7, $8');
@@ -28,7 +27,6 @@ class Trips {
       };
       return response(res, 201, data);
     } catch (error) {
-      console.log(error);
       return errResponse(res, 500, 'an error occured please try again later');
     }
   }
@@ -53,8 +51,23 @@ class Trips {
       }
       return response(res, 200, data);
     } catch (error) {
-      console.log(error)
       return errResponse(res, 500, 'an error occurred, try again later');
+    }
+  }
+
+  static async cancelTrip(req, res) {
+    try {
+      const { tripid } = req.params;
+      const rows = update('trip', 'status=$1', 'id=$2', ['cancelled', tripid]);
+      if (rows.length < 1) {
+        return errResponse(res, 404, 'No trip with provided id');
+      }
+      const data = {
+        message: 'Trip cancelled successfully',
+      };
+      return response(res, 201, data);
+    } catch (error) {
+      return errResponse(res, 500, 'an error occurred, please try again later');
     }
   }
 }

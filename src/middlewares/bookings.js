@@ -19,6 +19,22 @@ class Bookings {
     }
   }
 
+  static async checkIfTripIsCancelled(req, res, next) {
+    try {
+      const { tripid } = req.params;
+      const rows = await selectWhere('trip', '*', 'id=$1', [tripid]);
+      if (rows.length < 1) {
+        return errResponse(res, 404, 'No trip with provided id');
+      }
+      if (rows[0].status === 'cancelled') {
+        return errResponse(res, 400, 'the trip is already cancelled');
+      }
+      return next();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async tripDateIsValid(req, res, next) {
     try {
       const { trip_id } = req.body;
