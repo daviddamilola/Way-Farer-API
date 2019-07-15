@@ -25,10 +25,10 @@ class Utils {
    * @return {json object} .
    */
 
-  static response(res, status, data) {
+  static response(res, status, data1) {
     return res.status(status).json({
       status: 'success',
-      data,
+      data: data1,
     });
   }
 

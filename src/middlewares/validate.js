@@ -104,13 +104,10 @@ class Validator {
   }
 
   static checkSeats(req, res, next) {
-    req.checkBody('seats', 'seats must be a number and cannot be empty')
-      .not()
-      .isEmpty()
-      .isNumeric();
-    req.asyncValidationErrors()
-      .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+    if (!req.body.seats) {
+      req.body.seats = '22';
+    }
+    next();
   }
 
   static checkDate(req, res, next) {
