@@ -144,15 +144,15 @@ describe('trips controller', () => {
           done();
         });
     });
-    it('should validate id', (done) => {
-      superTest(server)
-        .patch('/api/v1/trips/e')
-        .set('token', token)
-        .end((err, res) => {
-          expect(res.status).to.be.equal(409);
-          done();
-        });
-    });
+//     it('should validate id', (done) => {
+//       superTest(server)
+//         .patch('/api/v1/trips/e')
+//         .set('token', token)
+//         .end((err, res) => {
+//           expect(res.status).to.be.equal(409);
+//           done();
+//         });
+//     });
     it('only admin can cancel an existing trip', (done) => {
       superTest(server)
         .patch('/api/v1/trips/1')
