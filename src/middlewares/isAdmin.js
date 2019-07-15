@@ -10,7 +10,7 @@ class IsAdmin {
     if (is_admin) {
       return next();
     }
-    return errResponse(res, 403, 'only admins can create a trip');
+    return errResponse(res, 403, 'only admins can perform such action');
   }
 }
 

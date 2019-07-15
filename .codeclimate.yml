@@ -29,5 +29,6 @@ checks:
 exclude_patterns:
   - "node_modules/"
   - "src/test/"
+  - "src/middlewares/validate.js"
   - "dist/"
   - "coverage"
