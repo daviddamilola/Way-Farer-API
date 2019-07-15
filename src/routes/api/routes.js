@@ -16,7 +16,7 @@ const {
   validateEmail, validateFirstName, validateLastName, validatePassword, checkTripId, checkparamId,
   checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
 } = Validator;
-const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
+const validateSignUp = [validateEmail, validateFirstName, validateLastName];
 const validateSignIn = [validateEmail];
 const router = express.Router();
 
