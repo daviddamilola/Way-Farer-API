@@ -38,7 +38,8 @@ class Validator {
 
   static validatePassword(req, res, next) {
     req.checkBody('password', 'password cannot be empty and must have at least 1 uppercase letter, 1 lowercase, a number and special character ')
-      .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/);
+      .not()
+      .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 409, errors[0].msg));

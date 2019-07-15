@@ -57,8 +57,8 @@ class Trips {
 
   static async cancelTrip(req, res) {
     try {
-      const { tripid } = req.params;
-      const rows = update('trip', 'status=$1', 'id=$2', ['cancelled', tripid]);
+      const { tripId } = req.params;
+      const rows = update('trip', 'status=$1', 'id=$2', ['cancelled', tripId]);
       if (rows.length < 1) {
         return errResponse(res, 404, 'No trip with provided id');
       }

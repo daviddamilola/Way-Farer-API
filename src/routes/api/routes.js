@@ -13,10 +13,10 @@ const { checkIfTripExists, tripDateIsValid, checkIfTripIsCancelled } = bookingsM
 const { checkIfBusExists, checkIfBusIsSheduled, checkValidSeats } = busCheck;
 const { checkIfAdmin } = isAdmin;
 const {
-  validateEmail, validateFirstName, validateLastName, validatePassword, checkTripId, checkparamId,
+  validateEmail, validateFirstName, validateLastName, checkTripId, checkparamId, validatePassword,
   checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
 } = Validator;
-const validateSignUp = [validateEmail, validateFirstName, validateLastName];
+const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
 const validateSignIn = [validateEmail];
 const router = express.Router();
 
@@ -37,7 +37,7 @@ router.post('/trips', authorize, checkIfAdmin, checkDate, checkFare, checkSeats,
   checkValidSeats, Trips.createTrip)
   .get('/trips', authorize, Trips.viewTrips);
 
-router.patch('/trips/:tripid', authorize, checkIfAdmin, checkparamId, checkIfTripIsCancelled, Trips.cancelTrip);
+router.patch('/trips/:tripId', authorize, checkIfAdmin, checkparamId, checkIfTripIsCancelled, Trips.cancelTrip);
 
 router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking)
   .get('/bookings', authorize, Bookings.viewBookings);

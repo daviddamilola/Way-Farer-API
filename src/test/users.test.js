@@ -71,20 +71,6 @@ describe('user controller', () => {
         });
     });
 
-    it('should not sign up a user with invalid password', (done) => {
-      superTest(server)
-        .post(signUpUrl)
-        .send(invalidUserPassword)
-        .end((err, res) => {
-          expect(res.body).to.haveOwnProperty('status');
-          expect(res.body.status).to.be.equal('error');
-          // eslint-disable-next-line max-len
-          expect(res.body.error).to.be.equal('password cannot be empty and must have at least 1 uppercase letter, 1 lowercase, a number and special character ');
-          expect(res.status).to.equal(409);
-          done();
-        });
-    });
-
     it('should not sign up a user with invalid first name', (done) => {
       superTest(server)
         .post(signUpUrl)
