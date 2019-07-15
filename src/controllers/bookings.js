@@ -4,7 +4,7 @@ import Auth from '../middlewares/auth';
 
 const { verifyToken } = Auth;
 const {
-  selectWhere, select, update, insert, response, errResponse,
+  selectWhere, select, update, insert, response, errResponse, deleteWhere,
 } = Utils;
 class Bookings {
   static async createBooking(req, res) {
@@ -35,7 +35,7 @@ class Bookings {
   }
 
   static async viewBookings(req, res) {
-    const details = verifyToken(req.headers.token).payload;
+    const details = verifyToken(req.headers.token);
     let row;
     if (details.is_admin) {
       row = await select('bookings', '*');
@@ -65,6 +65,21 @@ class Bookings {
     } catch (error) {
       return error;
     }
+  }
+
+  static async deleteBooking(req, res) {
+    const details = verifyToken(req.headers.token).payload;
+    const userId = details.id;
+    const { bookingId } = req.params;
+
+    const row = await deleteWhere('bookings', 'booking_id=$1 AND user_id=$2', [bookingId, userId]);
+    if (row.length < 1) {
+      return errResponse(res, 404, 'the :bookingId provided is not your id');
+    }
+    const data = {
+      message: 'Booking deleted successfully',
+    };
+    return response(res, 201, data);
   }
 }
 
