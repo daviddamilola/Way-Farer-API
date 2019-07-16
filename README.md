@@ -10,6 +10,12 @@ WayFarer is a public bus transportation booking server.
 ## Pivotal Tracker Project
 https://www.pivotaltracker.com/n/projects/2359690
 
+## API Documentation
+https://documenter.getpostman.com/view/7432975/SVSKMUgr
+
+## Heroku application
+https://wayfarer-app-proj.herokuapp.com/api/v1/
+
 ## Table of Content
  * [Getting Started](#getting-started)
 
@@ -73,10 +79,6 @@ e.g npm test
 <tr><td>POST</td> <td>/api/v1/bookings</td>  <td>Users can book a seat on a trip</td></tr>
 
 <tr><td>GET</td> <td>/api/v1/trips</td>  <td>Users and Admin can view all trips</td></tr>
-
-<tr><td>GET</td> <td>/api/v1/trips?filter_by=origin</td>  <td>Users can view trips by origin</td></tr>
-
-<tr><td>GET</td> <td>/api/v1/trips?filter_by=destination</td>  <td>Users can view trips by destination</td></tr>
 
 <tr><td>GET</td> <td>/api/v1/bookings</td>  <td>Admin can view all bookings, Users can view their own bookings</td></tr>
 
