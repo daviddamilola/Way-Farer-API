@@ -48,7 +48,7 @@ class Bookings {
   }
 
   static async viewBookings(req, res) {
-    const details = verifyToken(req.headers.token);
+    const details = verifyToken(req.headers.token).payload;
     let row;
     if (details.is_admin) {
       row = await select('bookings', '*');
