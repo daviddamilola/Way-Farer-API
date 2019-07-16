@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import debug from 'debug';
+import swaggerUI from 'swagger-ui-express';
 import apiRoutes from './routes/api/routes';
+import swaggerSpec from './config/swagger';
 import Util from './utils/utils';
 
 dotenv.config();
@@ -20,6 +22,7 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cors('*'));
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(validator());
 app.use('/api/v1', apiRoutes);
 
