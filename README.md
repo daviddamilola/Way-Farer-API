@@ -98,9 +98,6 @@ e.g npm test
 * Users can login
 * Users can book a seat on a trip.
 * Users can delete their booking.
-* Users can get a list of filtered trips based on origin.
-* Users can get a list of filtered trips based on destination.
-* Users can specify their seat numbers when making a booking.
 
 ### Admin
 * Admin can create a trip.
