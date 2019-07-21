@@ -1,17 +1,21 @@
-import debug from 'debug';
 import Trip from '../models/Trip';
 import Utils from '../utils/utils';
 
-const log = debug('server/debug');
 const {
   insert, response, errResponse, selectWhere, update,
 } = Utils;
 class Trips {
+  /**
+ * creates a trip
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
   static async createTrip(req, res) {
     const {
       bus_id, origin, destination, fare, seats, trip_date,
     } = req.body;
-    const status = "active";
+    const status = 'active';
     const date = new Date(trip_date);
     try {
       const trip = new Trip(bus_id, origin, destination, date, parseFloat(fare), status, seats);
@@ -30,13 +34,22 @@ class Trips {
       };
       return response(res, 201, data);
     } catch (error) {
-      log(error);
       return errResponse(res, 500, 'an error occured please try again later');
     }
   }
 
+  /**
+ * views all active trip
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
   static async viewTrips(req, res) {
     try {
+      const filter = req.query;
+      if (Object.keys(filter).length > 0) {
+        return Trips.getFilteredTrips(req, res, filter);
+      }
       const rows = await selectWhere('trip', 'id, bus_id, origin, destination, trip_date, fare, seats_available', 'status= $1', ['active']);
       const data = rows.map((trip) => {
         const obj = {
@@ -55,11 +68,51 @@ class Trips {
       }
       return response(res, 200, data);
     } catch (error) {
-      log(error);
       return errResponse(res, 500, 'an error occurred, try again later');
     }
   }
 
+  /**
+ * views all active trip with filters
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
+  static async getFilteredTrips(req, res, query) {
+    try {
+      if (query.origin && query.destination) {
+        const rows = await selectWhere('trip', '*', 'origin=$1 AND destination=$2 AND status=$3', [query.origin, query.destination, 'active']);
+        if (rows.length > 0) {
+          return response(res, 200, rows);
+        }
+        return errResponse(res, 404, 'no trips matching provided origin or destination');
+      }
+      if (query.origin) {
+        const rows = await selectWhere('trip', '*', 'origin like $1 AND status=$2', [query.origin, 'active']);
+        if (rows.length > 0) {
+          return response(res, 200, rows);
+        }
+        return errResponse(res, 404, 'no trips matching provided origin');
+      }
+      if (query.destination) {
+        const rows = await selectWhere('trip', '*', 'destination like $1 AND status=$2', [query.destination, 'active']);
+        if (rows.length > 0) {
+          return response(res, 200, rows);
+        }
+        return errResponse(res, 404, 'no trips matching provided destination');
+      }
+      return errResponse(res, 409, 'query fields should be either origin or destination');
+    } catch (err) {
+      return errResponse(res, 500, 'an error occurred please try again');
+    }
+  }
+
+  /**
+ * cancels a trip
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
   static async cancelTrip(req, res) {
     try {
       const { tripId } = req.params;
@@ -72,7 +125,6 @@ class Trips {
       };
       return response(res, 201, data);
     } catch (error) {
-      log(error);
       return errResponse(res, 500, 'an error occurred, please try again later');
     }
   }

@@ -1,0 +1,128 @@
+paths:
+  /auth/signup:         
+    post:  
+      tags:
+        - authentication
+      summary: sign up a new user
+      description: creates an account for a new user
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        description: User object
+        required: true
+        schema:
+          $ref: '#/definitions/signUpReq'
+      responses:
+        201:
+          description: new user created successfully
+          schema:
+            $ref: '#/definitions/UserSignupRes'
+        409:
+          description: User already exists
+          schema:
+            $ref: '#/definitions/errorDefinition'
+        409:
+          description: Invalid request details
+          schema:
+            $ref: '#/definitions/errorDefinition'
+        500:
+          description: Server error
+          schema:
+            $ref: '#/definitions/errorDefinition'
+  /auth/signin:        
+    post:  
+      tags:
+        - authentication
+      summary: Logs in a registered user
+      description: Allows registered users to login
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        description: User request object
+        required: true
+        schema:
+          $ref: '#/definitions/UserSigninReq'
+      responses:
+        200:
+          description: User login successfully
+          schema:
+            $ref: '#/definitions/UserSignupRes'
+        401:
+          description: Incorrect login details
+          schema:
+            $ref: '#/definitions/errorDefinition'
+        409:
+          description: Invalid request details
+          schema:
+            $ref: '#/definitions/errorDefinition'
+        500:
+          description: Server error
+          schema:
+            $ref: '#/definitions/errorDefinition'
+definitions:
+  UserSignupReq:
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+  UserSignupRes:
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: object
+        properties:
+          user_id:
+            type: integer
+            format: int64
+          first_name:
+            type: string
+          last_name:
+            type: string
+          email:
+            type: string
+            format: email
+          password:
+            type: string
+            format: password  
+          is_admin:
+            type: boolean  
+          token:
+            type: string  
+          registered_on:
+            type: string
+            format: date-time  
+  UserSigninReq:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+        minLength: 8  
+  errorDefinition:
+    type: object
+    properties:
+      status:
+        type: string
+      error:
+        type: string

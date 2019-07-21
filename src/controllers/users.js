@@ -15,6 +15,12 @@ class Users {
     return response(res, 200, 'welcome to the sign up page');
   }
 
+  /**
+ * registers a new user
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
   static async signUp(req, res) {
     const {
       email, first_name, last_name, password,
@@ -43,6 +49,13 @@ class Users {
       return errResponse(res, 500, 'an error occured try again later');
     }
   }
+
+  /**
+ * logs in a registered user
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
 
   static async signIn(req, res) {
     try {
