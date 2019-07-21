@@ -22,7 +22,7 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cors('*'));
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(validator());
 app.use('/api/v1', apiRoutes);
 

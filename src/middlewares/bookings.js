@@ -7,11 +7,11 @@ class Bookings {
     try {
       const { trip_id } = req.body;
       const rows = await selectWhere('trip', '*', 'id= $1', [trip_id]);
-      if (rows.length < 1) {
-        return errResponse(res, 404, 'no active trip with provided id');
+      if (!rows) {
+        return errResponse(res, 409, 'no active trip with provided id');
       }
       if (!(rows[0].status === 'active')) {
-        return errResponse(res, 404, 'trip is cancelled');
+        return errResponse(res, 409, 'trip is cancelled');
       }
       return next();
     } catch (error) {
@@ -21,17 +21,17 @@ class Bookings {
 
   static async checkIfTripIsCancelled(req, res, next) {
     try {
-      const { tripid } = req.params;
+      const tripid = req.params.trip_id || req.body.trip_id;
       const rows = await selectWhere('trip', '*', 'id=$1', [tripid]);
       if (rows.length < 1) {
-        return errResponse(res, 404, 'No trip with provided id');
+        return errResponse(res, 422, 'No trip with provided id');
       }
       if (rows[0].status === 'cancelled') {
         return errResponse(res, 400, 'the trip is already cancelled');
       }
       return next();
     } catch (error) {
-      throw error;
+      return errResponse(res, 500, 'an error occured, try again');
     }
   }
 
