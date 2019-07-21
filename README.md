@@ -10,6 +10,12 @@ WayFarer is a public bus transportation booking server.
 ## Pivotal Tracker Project
 https://www.pivotaltracker.com/n/projects/2359690
 
+## API Documentation
+https://documenter.getpostman.com/view/7432975/SVSKMUgr
+
+## Heroku application
+https://wayfarer-app-proj.herokuapp.com/api/v1/
+
 ## Table of Content
  * [Getting Started](#getting-started)
 
@@ -62,27 +68,25 @@ e.g npm test
 ### API End Points Test Using Postman
 
 <table>
-<tr><th>HTTP VERB</th><th>ENDPOINT</th><th>FUNCTIONALITY</th></tr>
+<tr><th>HTTP VERB</th><th>ENDPOINT</th><th>FUNCTIONALITY</th><th>REQUEST BODY</th><th>REQUEST QUERY</th><th>REQUEST PARAMS</th></tr>
 
-<tr><td>POST</td> <td>/api/v1/auth/signup</td>  <td>User can signup</td></tr>
+<tr><td>POST</td> <td>/api/v1/auth/signup</td>  <td>User can signup</td><td>TYPE: application/json OR form-urlencoded</td><td>NILL</td><td>NILL</td></tr>
 
-<tr><td>POST</td> <td>/api/v1/auth/login</td>  <td>User can signin</td></tr>
+<tr><td>POST</td> <td>/api/v1/auth/login</td>  <td>User can signin</td><td>TYPE: application/json OR form-urlencoded</td><td>NILL</td><td>NILL</td></tr>
 
-<tr><td>POST</td> <td>/api/v1/trips</td>  <td>Admin can create a trip</td></tr>
+<tr><td>POST</td> <td>/api/v1/trips</td>  <td>Admin can create a trip</td><td>TYPE: application/json OR form-urlencoded</td><td>NILL</td><td>NILL</td></tr>
 
-<tr><td>POST</td> <td>/api/v1/bookings</td>  <td>Users can book a seat on a trip</td></tr>
+<tr><td>POST</td> <td>/api/v1/bookings</td>  <td>Users can book a seat on a trip</td><td>TYPE: application/json OR form-urlencoded</td><td>NILL</td><td>NILL</td></tr>
 
-<tr><td>GET</td> <td>/api/v1/trips</td>  <td>Users and Admin can view all trips</td></tr>
+<tr><td>GET</td> <td>/api/v1/trips</td>  <td>Users and Admin can view all trips</td><td>NILL</td><td>NILL</td><td>NILL</td></tr>
+<tr><td>GET</td> <td>/api/v1/trips?origin=origin_name</td>  <td>Users and Admin can filter trips by origin</td><td>NILL</td><td>request origin<br />TYPE: "string"</td><td>NILL</td></tr>
+<tr><td>GET</td> <td>/api/v1/trips?destination=destination_name</td>  <td>Users and Admin can filter trips by destination</td><td>NILL</td><td>request destination<br />TYPE: "string"</td><td>NILL</td></tr>
 
-<tr><td>GET</td> <td>/api/v1/trips?filter_by=origin</td>  <td>Users can view trips by origin</td></tr>
+<tr><td>GET</td> <td>/api/v1/bookings</td>  <td>Admin can view all bookings, Users can view their own bookings</td><td>NILL</td><td>NILL</td><td>NILL</td></tr>
 
-<tr><td>GET</td> <td>/api/v1/trips?filter_by=destination</td>  <td>Users can view trips by destination</td></tr>
+<tr><td>PATCH</td> <td>/api/v1/trips/:tripId</td>  <td>Admin can cancel a trip</td><td>NILL</td><td>NILL</td><td>TYPE: NUMBER</td></tr>
 
-<tr><td>GET</td> <td>/api/v1/bookings</td>  <td>Admin can view all bookings, Users can view their own bookings</td></tr>
-
-<tr><td>PATCH</td> <td>/api/v1/trips/:tripId</td>  <td>Admin can cancel a trip</td></tr>
-
-<tr><td>DELETE</td> <td>/api/v1/bookings/:bookingId</td>  <td>Users can delete a booking</td></tr>
+<tr><td>DELETE</td> <td>/api/v1/bookings/:bookingId</td>  <td>Users can delete a booking</td><td>NILL</td><td>NILL</td><td>TYPE: NUMBER</td></tr>
 
 </table>
 
@@ -96,9 +100,6 @@ e.g npm test
 * Users can login
 * Users can book a seat on a trip.
 * Users can delete their booking.
-* Users can get a list of filtered trips based on origin.
-* Users can get a list of filtered trips based on destination.
-* Users can specify their seat numbers when making a booking.
 
 ### Admin
 * Admin can create a trip.
