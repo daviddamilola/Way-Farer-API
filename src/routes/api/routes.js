@@ -17,7 +17,7 @@ const {
   checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
 } = Validator;
 const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
-const validateSignIn = [validateEmail];
+const validateSignIn = [validateEmail, validatePassword];
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -32,13 +32,15 @@ router.get('/auth/signup', Users.welcomeSignUp)
 
 router.post('/auth/signin', validateSignIn, Users.signIn);
 
-router.post('/trips', authorize, checkIfAdmin, checkIfBusExists, checkSeats,
+router.post('/trips', authorize, checkIfAdmin, checkIfBusExists,
+  checkIfBusIsSheduled, checkSeats, checkDate, checkBusId, checkDestination, checkOrigin, checkFare,
   checkValidSeats, Trips.createTrip)
   .get('/trips', authorize, Trips.viewTrips);
 
-router.patch('/trips/:tripId', authorize, checkIfAdmin, Trips.cancelTrip);
+router.patch('/trips/:tripId', authorize, checkIfAdmin, checkparamId, Trips.cancelTrip);
 
-router.post('/bookings', authorize, checkTripId, checkIfTripExists, tripDateIsValid, Bookings.createBooking)
+router.post('/bookings', authorize, checkTripId, checkIfTripExists,
+  checkIfTripIsCancelled, tripDateIsValid, Bookings.createBooking)
   .get('/bookings', authorize, Bookings.viewBookings);
 
 router.delete('/bookings/:bookingId', authorize, Bookings.deleteBooking);

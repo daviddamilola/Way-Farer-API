@@ -65,43 +65,43 @@ class Validator {
       .catch(errors => errResponse(res, 409, errors[0].msg));
   }
 
-  // static checkBusId(req, res, next) {
-  //   req.checkBody('bus_id', 'bus_id must be an integer number and cannot be empty')
-  //     .not()
-  //     .isEmpty()
-  //     .isNumeric();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkBusId(req, res, next) {
+    req.checkBody('bus_id', 'bus_id must be an integer number and cannot be empty')
+      .not()
+      .isEmpty()
+      .isNumeric();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 
-  // static checkOrigin(req, res, next) {
-  //   req.checkBody('origin', 'origin cannot be empty')
-  //     .not()
-  //     .isEmpty();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkOrigin(req, res, next) {
+    req.checkBody('origin', 'origin cannot be empty')
+      .not()
+      .isEmpty();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 
-  // static checkDestination(req, res, next) {
-  //   req.checkBody('destination', 'destination cannot be empty')
-  //     .not()
-  //     .isEmpty();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkDestination(req, res, next) {
+    req.checkBody('destination', 'destination cannot be empty')
+      .not()
+      .isEmpty();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 
-  // static checkFare(req, res, next) {
-  //   req.checkBody('fare', 'fare must be a number and cannot be empty')
-  //     .not()
-  //     .isEmpty()
-  //     .isNumeric();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkFare(req, res, next) {
+    req.checkBody('fare', 'fare must be a number and cannot be empty')
+      .not()
+      .isEmpty()
+      .isNumeric();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 
   static checkSeats(req, res, next) {
     if (req.body.seats === undefined || req.body.seats === '') {
@@ -110,14 +110,14 @@ class Validator {
     next();
   }
 
-  // static checkDate(req, res, next) {
-  //   req.checkBody('trip_date', 'date should follow this format yyyy-mm-dd')
-  //     .not()
-  //     .isEmpty();
-  //   req.asyncValidationErrors()
-  //     .then(() => next())
-  //     .catch(errors => errResponse(res, 409, errors[0].msg));
-  // }
+  static checkDate(req, res, next) {
+    req.checkBody('trip_date', 'date should follow this format yyyy-mm-dd')
+      .not()
+      .isEmpty();
+    req.asyncValidationErrors()
+      .then(() => next())
+      .catch(errors => errResponse(res, 409, errors[0].msg));
+  }
 }
 
 export default Validator;

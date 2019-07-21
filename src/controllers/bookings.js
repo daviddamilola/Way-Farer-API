@@ -9,6 +9,12 @@ const {
   selectWhere, select, update, insert, response, errResponse, deleteWhere,
 } = Utils;
 class Bookings {
+  /**
+  * creates a booking for a logged in user
+  * @param {object} req
+  * @param {object} res
+  * @returns {json}
+  */
   static async createBooking(req, res) {
     const { trip_id } = req.body;
     const {
@@ -39,6 +45,7 @@ class Bookings {
       };
       return response(res, 201, data);
     } catch (error) {
+      log(error);
       if (error.routine === '_bt_check_unique') {
         return errResponse(res, 422, 'you can only make one booking per trip');
       }
@@ -47,6 +54,12 @@ class Bookings {
     }
   }
 
+  /**
+ * gets all bookings for admin and users own booking for user
+ * @param {object} req
+ * @param {object} res
+ * @returns {json}
+ */
   static async viewBookings(req, res) {
     const details = verifyToken(req.headers.token).payload;
     let row;
@@ -55,10 +68,15 @@ class Bookings {
       return response(res, 200, row);
     }
     row = await selectWhere('bookings', '*', 'user_id=$1', [details.id]);
-    log('row is',row);
+    log('row is', row);
     return response(res, 200, row);
   }
 
+  /**
+ * gets the details of a trip with provided id
+ * @param {number} trip_id
+ * @returns {object}
+ */
   static async getTripInfo(trip_id) {
     try {
       const row = await selectWhere('trip', '*', 'id=$1', [trip_id]);
@@ -68,6 +86,11 @@ class Bookings {
     }
   }
 
+  /**
+   * generates a seat number with trip_id provided
+   * @param {number} trip_id
+   * @returns {number}
+   */
   static async generateSeatNumber(trip_id) {
     try {
       const row = await selectWhere('trip', '*', 'id=$1', [trip_id]);
@@ -81,19 +104,30 @@ class Bookings {
     }
   }
 
+  /**
+ * delete a booking for a logged in user
+ * @param {object} req
+ * @param {object} res
+ * @returns json
+ */
+
   static async deleteBooking(req, res) {
     const details = verifyToken(req.headers.token).payload;
     const userId = details.id;
     const { bookingId } = req.params;
 
-    const row = await deleteWhere('bookings', 'booking_id=$1 AND user_id=$2', [bookingId, userId]);
-    if (row.length < 1) {
-      return errResponse(res, 404, 'the :bookingId provided is not your id');
+    try {
+      const row = await deleteWhere('bookings', 'booking_id=$1 AND user_id=$2', [bookingId, userId]);
+      if (row.length < 1) {
+        return errResponse(res, 404, 'the :bookingId provided is not your id');
+      }
+      const data = {
+        message: 'Booking deleted successfully',
+      };
+      return response(res, 201, data);
+    } catch (error) {
+      return errResponse(res, 500, 'an error occurred, please try again later');
     }
-    const data = {
-      message: 'Booking deleted successfully',
-    };
-    return response(res, 201, data);
   }
 }
 
