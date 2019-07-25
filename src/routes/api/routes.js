@@ -17,7 +17,6 @@ const {
   checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
 } = Validator;
 const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
-const validateSignIn = [validateEmail, validatePassword];
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -30,7 +29,7 @@ router.get('/', (req, res) => {
 router.get('/auth/signup', Users.welcomeSignUp)
   .post('/auth/signup', validateSignUp, Users.signUp);
 
-router.post('/auth/signin', validateSignIn, Users.signIn);
+router.post('/auth/signin', Users.signIn);
 
 router.post('/trips', authorize, checkIfAdmin, checkBusId, checkIfBusExists,
   checkIfBusIsSheduled, checkSeats, checkDate, checkDestination, checkOrigin, checkFare,
