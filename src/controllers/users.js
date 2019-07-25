@@ -62,11 +62,11 @@ class Users {
       const { email, password } = req.body;
       const targetUser = await User.signIn(email);
       if (!targetUser.row) {
-        return errResponse(res, 404, 'user does not exist');
+        return errResponse(res, 401, 'invalid login details');
       }
       const hashedPass = targetUser.row.password;
       if (!comparePassword(password, hashedPass)) {
-        return errResponse(res, 401, 'password is incorrect');
+        return errResponse(res, 401, 'invalid login details');
       }
       const { row } = targetUser;
       const { is_admin } = row;

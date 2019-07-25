@@ -131,7 +131,7 @@ describe('user controller', () => {
         .end((err, res) => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body).to.haveOwnProperty('error');
-          expect(res.status).to.be.equal(404);
+          expect(res.status).to.be.equal(401);
           expect(res.body.status).to.be.equal('error');
           done();
         });
