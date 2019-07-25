@@ -4,36 +4,42 @@ import Utils from '../utils/utils';
 const { errResponse } = Utils;
 class Validator {
   static validateEmail(req, res, next) {
-    req.checkBody('email', 'Please enter a valid email').not().isEmpty().isEmail()
+    req.checkBody('email', 'Please enter a valid email')
+      .trim()
+      .not()
+      .isEmpty()
+      .isEmail()
       .isLength({ min: 5 })
       .isLength({ max: 50 })
       .normalizeEmail()
       .trim();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static validateFirstName(req, res, next) {
     req.checkBody('first_name', 'Please supply a valid first name')
+      .trim()
       .not()
       .isEmpty()
       .isAlpha()
       .isLength({ max: 90 });
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static validateLastName(req, res, next) {
     req.checkBody('last_name', 'Please supply a valid last name')
+      .trim()
       .not()
       .isEmpty()
       .isAlpha()
       .isLength({ max: 90 });
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static validatePassword(req, res, next) {
@@ -42,7 +48,7 @@ class Validator {
       .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkTripId(req, res, next) {
@@ -52,7 +58,7 @@ class Validator {
       .isNumeric();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   // eslint-disable-next-line consistent-return
@@ -62,11 +68,11 @@ class Validator {
       .isEmpty();
     // eslint-disable-next-line no-restricted-globals
     if (isNaN(parseInt(req.params.id, 10))) {
-      return errResponse(res, 409, 'tripid must be an integer number and cannot be empty');
+      return errResponse(res, 400, 'tripid must be an integer number and cannot be empty');
     }
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkBusId(req, res, next) {
@@ -76,7 +82,7 @@ class Validator {
       .isNumeric();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkOrigin(req, res, next) {
@@ -85,7 +91,7 @@ class Validator {
       .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkDestination(req, res, next) {
@@ -94,7 +100,7 @@ class Validator {
       .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkFare(req, res, next) {
@@ -104,7 +110,7 @@ class Validator {
       .isNumeric();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
   static checkSeats(req, res, next) {
@@ -120,7 +126,7 @@ class Validator {
       .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
-      .catch(errors => errResponse(res, 409, errors[0].msg));
+      .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 }
 

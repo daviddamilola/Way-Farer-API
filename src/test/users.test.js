@@ -53,7 +53,7 @@ describe('user controller', () => {
         .end((err, res) => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
-          expect(res.status).to.equal(409);
+          expect(res.status).to.equal(400);
           done();
         });
     });
@@ -66,7 +66,7 @@ describe('user controller', () => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
           expect(res.body.error).to.be.equal('Please enter a valid email');
-          expect(res.status).to.equal(409);
+          expect(res.status).to.equal(400);
           done();
         });
     });
@@ -79,7 +79,7 @@ describe('user controller', () => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
           expect(res.body.error).to.be.equal('Please supply a valid first name');
-          expect(res.status).to.equal(409);
+          expect(res.status).to.equal(400);
           done();
         });
     });
@@ -92,7 +92,7 @@ describe('user controller', () => {
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body.status).to.be.equal('error');
           expect(res.body.error).to.be.equal('Please supply a valid last name');
-          expect(res.status).to.equal(409);
+          expect(res.status).to.equal(400);
           done();
         });
     });

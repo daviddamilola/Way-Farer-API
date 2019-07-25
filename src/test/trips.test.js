@@ -69,7 +69,7 @@ describe('trips controller', () => {
           seats: 22,
         })
         .end((err, res) => {
-          expect(res.status).to.be.equal(409);
+          expect(res.status).to.be.equal(400);
           done();
         });
     });
@@ -87,7 +87,7 @@ describe('trips controller', () => {
           seats: 22,
         })
         .end((err, res) => {
-          expect(res.status).to.be.equal(409);
+          expect(res.status).to.be.equal(400);
           done();
         });
     });
@@ -105,7 +105,7 @@ describe('trips controller', () => {
           seats: 22,
         })
         .end((err, res) => {
-          expect(res.status).to.be.equal(409);
+          expect(res.status).to.be.equal(400);
           done();
         });
     });
@@ -123,7 +123,7 @@ describe('trips controller', () => {
           seats: 22,
         })
         .end((err, res) => {
-          expect(res.status).to.be.equal(409);
+          expect(res.status).to.be.equal(400);
           done();
         });
     });
@@ -150,7 +150,7 @@ describe('trips controller', () => {
         .patch('/api/v1/trips/e')
         .set('token', token)
         .end((err, res) => {
-          expect(res.status).to.be.equal(409);
+          expect(res.status).to.be.equal(400);
           done();
         });
     });
