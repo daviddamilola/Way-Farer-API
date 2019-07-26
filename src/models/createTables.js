@@ -1,3 +1,9 @@
+import bycrypt from 'bcrypt-nodejs';
+
+const hashPassword = (password) => {
+  return bycrypt.hashSync(password);
+}
+
 const QueryModel = {
 
   createUsersTable: `CREATE TABLE IF NOT EXISTS users(
@@ -7,7 +13,7 @@ const QueryModel = {
     last_name VARCHAR(128),
     password VARCHAR(128) NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT false,
-    registered_on DATE NOT NULL
+    registered_on DATE NOT NULL DEFAULT CURRENT_DATE
     );`,
 
   createBusTable: `CREATE TABLE IF NOT EXISTS bus(
@@ -56,8 +62,16 @@ const QueryModel = {
   seedBus: `INSERT INTO bus 
                     (number_plate, manufacturer, model, year, capacity, created_on ) 
                     VALUES 
-                    ('ktu-mus-19', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
-                    ('ktu-908-lg', 'toyota', 'hiace', 2015, 22, '10-07-2019')`,
+                    ('ktu-mus-aj', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('ghy-908-lg', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('htu-452-kn', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('kio-998-os', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('pil-657-on', 'toyota', 'hiace', 2015, 22, '10-07-2019'),
+                    ('rew-345-kw', 'toyota', 'hiace', 2015, 22, '10-07-2019')`,
+  seedAdmin: `INSERT INTO users
+  (email, first_name, last_name, password, is_admin)
+  VALUES
+  ('damola@wayfareradmin.com','david' , 'oluwasusi', '${hashPassword('David20@$')}', true)`,
 };
 
 export default QueryModel;

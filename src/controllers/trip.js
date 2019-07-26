@@ -51,22 +51,10 @@ class Trips {
         return Trips.getFilteredTrips(req, res, filter);
       }
       const rows = await selectWhere('trip', 'id, bus_id, origin, destination, trip_date, fare, seats_available', 'status= $1', ['active']);
-      const data = rows.map((trip) => {
-        const obj = {
-          id: trip.id,
-          bus_id: trip.bus_id,
-          origin: trip.origin,
-          destination: trip.destination,
-          fare: trip.fare.toFixed(2),
-          seats_available: trip.seats_available,
-          date: new Date(trip.trip_date).toDateString(),
-        };
-        return obj;
-      });
       if (rows.length < 1) {
         return errResponse(res, 404, 'no trips are currently available');
       }
-      return response(res, 200, data);
+      return response(res, 200, rows);
     } catch (error) {
       return errResponse(res, 500, 'an error occurred, try again later');
     }

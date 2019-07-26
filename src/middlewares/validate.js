@@ -44,8 +44,7 @@ class Validator {
 
   static validatePassword(req, res, next) {
     req.checkBody('password', 'password cannot be empty and must have at least 1 uppercase letter, 1 lowercase, a number and special character ')
-      .not()
-      .isEmpty();
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, 'i');
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 400, errors[0].msg));
@@ -63,23 +62,22 @@ class Validator {
 
   // eslint-disable-next-line consistent-return
   static checkparamId(req, res, next) {
-    req.checkParams('tripid', 'tripid must be an integer number and cannot be empty')
-      .not()
-      .isEmpty();
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(parseInt(req.params.id, 10))) {
-      return errResponse(res, 400, 'tripid must be an integer number and cannot be empty');
-    }
+    req.checkParams('tripId', 'param must be an integer number and cannot be empty').isInt();
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
+  // eslint-disable-next-line consistent-return
   static checkBusId(req, res, next) {
-    req.checkBody('bus_id', 'bus_id must be an integer number and cannot be empty')
+    const probInt = parseInt(req.body.bus_id, 10);
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(probInt)) {
+      return errResponse(res, 400, 'bus_id must be an integer number');
+    }
+    req.checkBody('bus_id', 'bus_id cannot be empty')
       .not()
-      .isEmpty()
-      .isNumeric();
+      .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 400, errors[0].msg));
@@ -103,11 +101,19 @@ class Validator {
       .catch(errors => errResponse(res, 400, errors[0].msg));
   }
 
+  static isNumber(number) {
+    return typeof (number) === 'number';
+  }
+
+  // eslint-disable-next-line consistent-return
   static checkFare(req, res, next) {
-    req.checkBody('fare', 'fare must be a number and cannot be empty')
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(parseFloat(req.body.fare))) {
+      return errResponse(res, 400, 'fare must be a number');
+    }
+    req.checkBody('fare', 'fare cannot be empty')
       .not()
-      .isEmpty()
-      .isNumeric();
+      .isEmpty();
     req.asyncValidationErrors()
       .then(() => next())
       .catch(errors => errResponse(res, 400, errors[0].msg));

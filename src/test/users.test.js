@@ -27,6 +27,7 @@ describe('user controller', () => {
         .post(signUpUrl)
         .send(validUser)
         .end((err, res) => {
+          console.log(res.body);
           expect(res.body).to.haveOwnProperty('status');
           expect(res.body).to.haveOwnProperty('data');
           expect(res.status).to.be.equal(201);
