@@ -3,16 +3,17 @@ import superTest from 'supertest';
 import debug from 'debug';
 import server from '../server';
 import db from '../db';
+import queries from '../models/createTables';
 
 const { pg, initTables } = db;
+const { seedAdmin, seedBus } = queries;
+
 const url = '/api/v1/trips';
 
 const dropTable = async () => {
-  try {
-    await pg.query('truncate table users, trip, bookings restart identity cascade;');
-  } catch (error) {
-    debug('server/debug')(error);
-  }
+  pg.query('truncate table users, trip, bus, bookings restart identity cascade')
+    .then(seedBus)
+    .then(seedAdmin);
 };
 
 let token;
@@ -20,38 +21,44 @@ let token2;
 let tripId;
 
 before((done) => {
-  initTables().then(() => {
-    dropTable();
-  })
-    .then(() => done());
+  dropTable()
+    .then(() => { done() });
 });
 
 describe('trips controller', () => {
   describe('post /api/v1/trips', () => {
     before((done) => {
       superTest(server)
-        .post('/api/v1/auth/signUp')
+        .post('/api/v1/auth/signin')
         .send({
           email: 'damola@wayfareradmin.com',
           password: 'David20@$',
-          first_name: 'damola',
-          last_name: 'david',
         })
         .end((err, res) => {
+          console.log(err);
+          console.log(res.body);
           // eslint-disable-next-line prefer-destructuring
           token = res.body.data.token;
+          console.log(token);
+          done();
         });
+    });
+    it('should create a trip', (done) => {
       superTest(server)
-        .post('/api/v1/auth/signUp')
+        .post(url)
+        .set('token', token)
         .send({
-          email: 'damola@gmail.com',
-          password: 'David20@$',
-          first_name: 'damola',
-          last_name: 'david',
+          bus_id: '2',
+          origin: 'lagos',
+          destination: 'ilorin',
+          trip_date: '2019-08-30',
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
         })
         .end((err, res) => {
-          // eslint-disable-next-line prefer-destructuring
-          token2 = res.body.data.token;
+          console.log(res.body);
+          expect(res.status).to.be.equal(201);
           done();
         });
     });
@@ -69,6 +76,7 @@ describe('trips controller', () => {
           seats: 22,
         })
         .end((err, res) => {
+          console.log(err);
           expect(res.status).to.be.equal(400);
           done();
         });
@@ -127,24 +135,6 @@ describe('trips controller', () => {
           done();
         });
     });
-    it('should create a trip', (done) => {
-      superTest(server)
-        .post(url)
-        .set('token', token)
-        .send({
-          bus_id: '2',
-          origin: 'lagos',
-          destination: 'ilorin',
-          trip_date: '2019-07-20',
-          fare: 6000.00,
-          status: 'active',
-          seats: 22,
-        })
-        .end((err, res) => {
-          expect(res.status).to.be.equal(201);
-          done();
-        });
-    });
     it('should validate id', (done) => {
       superTest(server)
         .patch('/api/v1/trips/e')
@@ -157,7 +147,7 @@ describe('trips controller', () => {
     it('only admin can cancel an existing trip', (done) => {
       superTest(server)
         .patch('/api/v1/trips/1')
-        .set('token', token2)
+        .set('token', token)
         .end((err, res) => {
           expect(res.status).to.be.equal(403);
           done();
