@@ -241,24 +241,9 @@ describe('trips controller', () => {
           // eslint-disable-next-line prefer-destructuring
           token = res.body.data.token;
           console.log(token);
-      
+          done();
         });
-        superTest(server)
-          .post(url)
-          .set('token', token)
-          .send({
-            bus_id: '1',
-            origin: 'akure',
-            destination: 'ilorin',
-            trip_date: '2019-09-22',
-            fare: 6000.00,
-            status: 'active',
-            seats: 22,
-          })
-          .end((err, res) => {
-            tripId = res.body.data.id;
-            done();
-          });
+
       })
       it('should return an array of available trips to user or admin', (done) => {
         superTest(server)
