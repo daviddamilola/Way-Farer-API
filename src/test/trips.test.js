@@ -298,7 +298,7 @@ describe('trips controller', () => {
           .get('/api/v1/trips')
           // eslint-disable-next-line max-len
           .end((err, res) => {
-            expect(res.status).to.be.equal(401);
+            expect(res.body).to.haveOwnProperty('error');
             done();
           });
       });
