@@ -169,7 +169,23 @@ describe('trips controller', () => {
           // eslint-disable-next-line prefer-destructuring
           token2 = res.body.data.token;
           console.log(token2);
-          done();
+          
+        });
+        
+        superTest(server)
+        .post('/api/v1/auth/signin')
+        .send({
+          email: 'damola@wayfareradmin.com',
+          password: 'David20@$',
+
+        })
+        .end((err, res) => {
+          console.log(err);
+          console.log(res.body);
+          // eslint-disable-next-line prefer-destructuring
+          token = res.body.data.token;
+          console.log(token);
+      
         });
         superTest(server)
           .post(url)
