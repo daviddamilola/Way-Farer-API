@@ -149,12 +149,28 @@ describe('trips controller', () => {
         .patch('/api/v1/trips/1')
         .set('token', token)
         .end((err, res) => {
-          expect(res.status).to.be.equal(403);
+          expect(res.status).to.be.equal(201);
           done();
         });
     });
     describe('post /api/v1/bookings', () => {
       before((done) => {
+        superTest(server)
+        .post('/api/v1/auth/signUp')
+        .send({
+          email: 'damola@yahoo.com',
+          password: 'David20@$',
+          first_name: 'dan',
+          last_name: 'david',
+        })
+        .end((err, res) => {
+          console.log(err);
+          console.log(res.body);
+          // eslint-disable-next-line prefer-destructuring
+          token2 = res.body.data.token;
+          console.log(token2);
+          done();
+        });
         superTest(server)
           .post(url)
           .set('token', token)
