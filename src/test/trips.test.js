@@ -293,15 +293,11 @@ describe('trips controller', () => {
           });
       });
 
-      it('should not grant access to users not logged in', (done) => {
-        superTest(server)
-          .get('/api/v1/trips')
-          // eslint-disable-next-line max-len
-          .end((err, res) => {
-            expect(res.body).to.haveOwnProperty('error');
-            done();
-          });
-      });
+     
+      
+      
+
+      
     });
   });
 });
