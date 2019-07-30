@@ -241,9 +241,25 @@ describe('trips controller', () => {
           // eslint-disable-next-line prefer-destructuring
           token = res.body.data.token;
           console.log(token);
+          
+        });
+      superTest(server)
+        .post(url)
+        .set('token', token)
+        .send({
+          bus_id: '2',
+          origin: 'lagos',
+          destination: 'ilorin',
+          trip_date: '2019-08-30',
+          fare: 6000.00,
+          status: 'active',
+          seats: 22,
+        })
+        .end((err, res) => {
+          console.log(res.body);
+          expect(res.status).to.be.equal(201);
           done();
         });
-
       })
       it('should return an array of available trips to user or admin', (done) => {
         superTest(server)
