@@ -1,23 +1,9 @@
 import express from 'express';
 import Users from '../../controllers/users';
 import Trips from '../../controllers/trip';
-import Validator from '../../middlewares/validate';
-import isAdmin from '../../middlewares/isAdmin';
-import busCheck from '../../middlewares/bus';
-import Authorize from '../../middlewares/authorize';
-import bookingsMiddleware from '../../middlewares/bookings';
 import Bookings from '../../controllers/bookings';
+import validations from '../../middlewares/validations';
 
-const { authorize } = Authorize;
-const { checkIfTripExists, tripDateIsValid, checkIfTripIsCancelled } = bookingsMiddleware;
-const { checkIfBusExists, checkIfBusIsSheduled, checkValidSeats } = busCheck;
-const { checkIfAdmin } = isAdmin;
-const {
-  validateEmail, validateFirstName, validateLastName, checkTripId, checkparamId, validatePassword,
-  checkDate, checkBusId, checkDestination, checkOrigin, checkFare, checkSeats,
-} = Validator;
-const validateSignUp = [validateEmail, validateFirstName, validateLastName, validatePassword];
-const validateSignIn = [validateEmail, validatePassword];
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -27,22 +13,29 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/auth/signup', Users.welcomeSignUp)
-  .post('/auth/signup', validateSignUp, Users.signUp);
+router
+  .get('/auth/signup', Users.welcomeSignUp)
+  .post('/auth/signup', validations.validateSignUp, Users.signUp);
 
-router.post('/auth/signin', validateSignIn, Users.signIn);
+router
+  .patch('/users/:email', validations.validateCreateAdmin, Users.createAdmin);
 
-router.post('/trips', authorize, checkIfAdmin, checkBusId, checkIfBusExists,
-  checkIfBusIsSheduled, checkSeats, checkDate, checkDestination, checkOrigin, checkFare,
-  checkValidSeats, Trips.createTrip)
-  .get('/trips', authorize, Trips.viewTrips);
+router
+  .post('/auth/signin', Users.signIn);
 
-router.patch('/trips/:tripId', authorize, checkIfAdmin, checkparamId, Trips.cancelTrip);
+router
+  .post('/trips', validations.validateCreateTrip, Trips.createTrip)
+  .get('/trips', validations.validateViewTrips, Trips.viewTrips);
 
-router.post('/bookings', authorize, checkTripId, checkIfTripExists,
-  checkIfTripIsCancelled, tripDateIsValid, Bookings.createBooking)
-  .get('/bookings', authorize, Bookings.viewBookings);
+router
+  .patch('/trips/:tripId', validations.validateCancelTrip, Trips.cancelTrip);
 
-router.delete('/bookings/:bookingId', authorize, Bookings.deleteBooking);
+router
+  .post('/bookings', validations.validateCreateBooking, Bookings.createBooking)
+  .get('/bookings', validations.validateViewBookings, Bookings.viewBookings);
+
+
+router
+  .delete('/bookings/:bookingId', validations.validateDeleteBookings, Bookings.deleteBooking);
 
 export default router;

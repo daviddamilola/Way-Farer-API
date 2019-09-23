@@ -30,6 +30,11 @@ app.all('*', (req, res) => {
   errResponse(res, 404, 'this page does not exist');
 });
 
+app.use((err, req, res) => {
+  if (err) {
+    errResponse(res, 500, 'an error occured pls try again');
+  }
+});
 app.listen(app.get('port'), () => {
   debug('server/debug')(`Express started on http://localhost:${app.get('port')}'; press Ctrl-C to terminate.`);
 });

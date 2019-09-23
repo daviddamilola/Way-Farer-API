@@ -2,11 +2,10 @@ import debug from 'debug';
 import Utils from '../utils/utils';
 import User from '../models/User';
 import auth from '../middlewares/auth';
-import Admin from '../models/Admin';
 
 const log = debug('server/debug');
 const {
-  response, hashPassword, comparePassword, insert, errResponse,
+  response, hashPassword, comparePassword, insert, errResponse, update,
 } = Utils;
 const { makeToken } = auth;
 
@@ -26,9 +25,7 @@ class Users {
       email, first_name, last_name, password,
     } = req.body;
     const protectedPassword = hashPassword(password);
-    const newUser = /@wayfareradmin/.test(email)
-      ? new Admin(email, first_name, last_name, protectedPassword)
-      : new User(email, first_name, last_name, protectedPassword);
+    const newUser = new User(email, first_name, last_name, protectedPassword);
     try {
       const row = await insert('users',
         'email, first_name, last_name, password, is_admin, registered_on',
@@ -42,9 +39,6 @@ class Users {
       };
       return response(res, 201, data);
     } catch (errors) {
-      if (errors.routine === '_bt_check_unique') {
-        return errResponse(res, 409, 'user already exists');
-      }
       log(errors);
       return errResponse(res, 500, 'an error occured try again later');
     }
@@ -62,11 +56,11 @@ class Users {
       const { email, password } = req.body;
       const targetUser = await User.signIn(email);
       if (!targetUser.row) {
-        return errResponse(res, 404, 'user does not exist');
+        return errResponse(res, 401, 'invalid login details');
       }
       const hashedPass = targetUser.row.password;
       if (!comparePassword(password, hashedPass)) {
-        return errResponse(res, 401, 'password is incorrect');
+        return errResponse(res, 401, 'invalid login details');
       }
       const { row } = targetUser;
       const { is_admin } = row;
@@ -76,6 +70,35 @@ class Users {
     } catch (error) {
       log(error);
       return errResponse(res, 500, 'an error occured, please try again');
+    }
+  }
+
+  static async createAdmin(req, res) {
+    try {
+      if (req.query.revoke.toLowerCase() === 'true') {
+        return Users.revokeAdmin(req, res);
+      }
+      const { email } = req.params;
+      const row = await update('users', 'is_admin=$1', 'email=$2', [true, email]);
+      if (row.length < 1) {
+        return errResponse(res, 404, 'no user with provided email');
+      }
+      return response(res, 201, { message: 'user is now an admin' });
+    } catch (error) {
+      return errResponse(res, 500, 'an error occurred please try again later');
+    }
+  }
+
+  static async revokeAdmin(req, res) {
+    try {
+      const { email } = req.params;
+      const row = await update('users', 'is_admin=$1', 'email=$2', [false, email]);
+      if (row.length < 1) {
+        return errResponse(res, 404, 'no user with provided email');
+      }
+      return response(res, 201, { message: 'user is no longer an admin' });
+    } catch (error) {
+      return errResponse(res, 500, 'an error occurred please try again later');
     }
   }
 }

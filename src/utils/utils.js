@@ -63,7 +63,7 @@ class Utils {
   }
 
   static async update(table_name, columnValuePair, condition, values) {
-    const queryString = `UPDATE ${table_name} SET ${columnValuePair} WHERE ${condition};`;
+    const queryString = `UPDATE ${table_name} SET ${columnValuePair} WHERE ${condition} RETURNING *`;
     try {
       const { rows } = await pg.query(queryString, values);
       return rows;
